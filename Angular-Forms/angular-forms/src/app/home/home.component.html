@@ -1,0 +1,56 @@
+<h3 *ngIf="languages.length == 0">Loading...</h3>
+<div class="container mt-3" *ngIf="languages.length > 0">
+    <h3>Employee Form</h3>
+    <form #form="ngForm" (submit)="submitForm(form)" novalidate>
+        <div class="form-group mt-3">
+            <label class="form-label">First Name</label>
+            <input #firstName="ngModel" required class="form-control" type="text" required name="firstName"
+                [class.is-invalid]="firstName.invalid && firstName.touched" [ngModel]="model.firstName"
+                (ngModelChange)="firstNameToUpperCase($event)">
+        </div>
+        <div *ngIf="firstName.invalid && firstName.touched" class="alert alert-danger">
+            First name is required.
+        </div>
+        <div class="form-group mt-3">
+            <label class="form-label">Last Name</label>
+            <input #lastName="ngModel" class="form-control" type="text" required name="lastName"
+                [(ngModel)]="model.lastName">
+        </div>
+        <div *ngIf="lastName.invalid && lastName.touched" class="alert alert-danger">
+            Last name is required.
+        </div>
+        <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" name="is-full-time" [(ngModel)]="model.isFullTime">
+            <label class="form-check-label" for="flexCheckDisabled">
+                Full Time Employee
+            </label>
+        </div>
+        <label class="form-label mt-3">Payment Type</label>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="paymentType" value="w2" checked
+                [(ngModel)]="model.paymentType">
+            <label class="form-check-label">
+                W2
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="paymentType" value="1099"
+                [(ngModel)]="model.paymentType">
+            <label class="form-check-label">
+                1099
+            </label>
+        </div>
+        <div class="form-group mt-3">
+            <label class="form-label">Primary Language</label>
+            <select #primaryLanguage class="form-control" name="primaryLanguage"
+                [class.is-invalid]="hasPrimaryLanguageError" (blur)="validatePrimaryLanguage(primaryLanguage.value)"
+                (change)="validatePrimaryLanguage(primaryLanguage.value)" [(ngModel)]="model.primaryLanguage">
+                <option value="default">Select a Language...</option>
+                <option *ngFor="let lang of languages">
+                    {{lang}}
+                </option>
+            </select>
+        </div>
+        <button [disabled]="form.invalid" class="btn btn-primary mt-3" type="submit">Ok</button>
+    </form>
+</div>
